@@ -2,7 +2,7 @@
 <project name="test" default="buildjnlp" basedir="." xmlns:jw="org.unintelligible.antjnlpwar">
 	<typedef resource="org/unintelligible/antjnlpwar/antjnlpwar.xml" format="xml" uri="org.unintelligible.antjnlpwar">
 		<classpath>
-			<pathelement location="lib/ant-jnlp-war-0.9.jar"/>
+			<pathelement location="lib/ant-jnlp-war_deps-0.9.jar"/>
 		</classpath>
 	</typedef>
 
@@ -11,6 +11,7 @@
 	<property name="build" value="build"/>
 
 	<target name="init">
+		<delete dir="${build}"/>
 		<mkdir dir="${build}"/>
 	</target>
 
@@ -30,12 +31,12 @@
          * signAlias: the name of the certificate to use (used to sign the jars)
          -->
 		<jw:jnlpwar
-            tofile="${build}/myApplicationName.war"
+            tofile="${build}/areyoubillywhizz.jnlp"
             codebase="http://www.whatever.com/myApplicationName"
             title="areYouBillyWhizz"
             vendor="floater"
-            signStorepass="myJavaCertificationStorePassword"
-            signAlias="myJavaCertificationAlias" >
+			signStorepass="Abithiw2itb"
+            signAlias="aybw" >
 			<!-- Add a normal and a short description -->
 			<jw:description>This is the descriptive text for the product</jw:description>
 			<jw:description kind="short">This is a short descriptive text for the product</jw:description>
