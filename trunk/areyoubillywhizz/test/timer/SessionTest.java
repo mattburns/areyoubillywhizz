@@ -93,7 +93,7 @@ public class SessionTest extends TestCase {
 		session.getAttempts().add(new Solve(100, ResultType.SOLVED));
 		session.getAttempts().add(new Solve(146, ResultType.SOLVED));
 		
-		assertEquals(98, session.getSpeedOrderedAttempts().get(session.getAttempts().size() - 1));
+		assertEquals(98, session.getSpeedOrderedAttempts().get(session.getAttempts().size() - 1).getTime());
 	}
 
 	/*
@@ -107,7 +107,7 @@ public class SessionTest extends TestCase {
 		session.getAttempts().add(new Solve(100, ResultType.SOLVED));
 		session.getAttempts().add(new Solve(146, ResultType.SOLVED));
 		
-		assertEquals(199, session.getSpeedOrderedAttempts().get(0));
+		assertEquals(199, session.getSpeedOrderedAttempts().get(0).getTime());
 	}
 
 }

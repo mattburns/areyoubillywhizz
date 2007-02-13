@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Widget;
  * completely overwritten by Jigloo.
  * #SWTResourceManager:version4.0.0#
  */
+@SuppressWarnings("unchecked")
 public class SWTResourceManager {
 
 	private static HashMap resources = new HashMap();
