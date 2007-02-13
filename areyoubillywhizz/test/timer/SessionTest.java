@@ -1,4 +1,4 @@
-package sandpit;
+package timer;
 
 import timer.Session;
 import timer.Solve;
