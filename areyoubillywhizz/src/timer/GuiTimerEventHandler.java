@@ -57,23 +57,23 @@ public class GuiTimerEventHandler implements TimerEventHandler {
 					leftButton.setText("left");
 					rightButton.setText("right");
 					switch (state) {
-					case (LEFT):
+					case LEFT:
 						leftButton.setVisible(true);
 						rightButton.setVisible(false);
 						break;
-					case (RIGHT):
+					case RIGHT:
 						leftButton.setVisible(false);
 						rightButton.setVisible(true);
 						break;
-					case (STANDBY):
+					case STANDBY:
 						leftButton.setText("GO!!");
 						rightButton.setText("GO!!");
-					case (BOTH):
+					case BOTH:
 						leftButton.setVisible(true);
 						rightButton.setVisible(true);
 						break;
-					case (OFF):
-					case (STOPPED):
+					case OFF:
+					case STOPPED:
 						if (canAcceptNextTime) {
 							session.getAttempts().add(
 									new Solve((int) TimerCodeParser
@@ -87,8 +87,8 @@ public class GuiTimerEventHandler implements TimerEventHandler {
 						leftButton.setVisible(false);
 						rightButton.setVisible(false);
 						break;
-					case (RUNNING):
-					case (RESET):
+					case RUNNING:
+					case RESET:
 						canAcceptNextTime = true;
 						leftButton.setVisible(false);
 						rightButton.setVisible(false);

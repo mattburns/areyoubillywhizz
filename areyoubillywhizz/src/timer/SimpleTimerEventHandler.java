@@ -22,22 +22,22 @@ public class SimpleTimerEventHandler implements TimerEventHandler {
 		if (newState != oldState) {
 
 			switch (state) {
-			case (LEFT):
+			case LEFT:
 				leftPressed = true;
 				rightPressed = false;
 				break;
-			case (RIGHT):
+			case RIGHT:
 				leftPressed = false;
 				rightPressed = true;
 				break;
-			case (STANDBY):
+			case STANDBY:
 			// ready to go
-			case (BOTH):
+			case BOTH:
 				leftPressed = true;
 				rightPressed = true;
 				break;
-			case (OFF):
-			case (STOPPED):
+			case OFF:
+			case STOPPED:
 				if (canAcceptNextTime) {
 					session.getAttempts()
 							.add(
@@ -49,8 +49,8 @@ public class SimpleTimerEventHandler implements TimerEventHandler {
 				leftPressed = false;
 				rightPressed = false;
 				break;
-			case (RUNNING):
-			case (RESET):
+			case RUNNING:
+			case RESET:
 				canAcceptNextTime = true;
 				leftPressed = false;
 				rightPressed = false;

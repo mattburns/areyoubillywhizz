@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
-<project name="test" default="compile" basedir=".">
+<project name="test" default="test" basedir=".">
 	<property name="src" value="src"/>
+	<property name="test" value="test"/>
+	<property name="testreports" value="testreports"/>
 	<property name="bin" value="bin"/>
 	<property name="lib" value="lib"/>
 	<property name="rxtxbins" value="${lib}/rxtx-2.1-7-bins-r2"/>
@@ -11,14 +13,50 @@
 	<target name="init">
 		<delete dir="${build}"/>
 		<mkdir dir="${build}"/>
+		<delete dir="${bin}"/>
+		<mkdir dir="${bin}"/>
+		<delete dir="${testreports}"/>
+		<mkdir dir="${testreports}"/>
 		<copy file="${rxtxbins}/Windows/i368-mingw32/rxtxSerial.dll" todir="${jre}/bin" />
 		<copy file="${rxtxbins}/RXTXcomm.jar" todir="${jre}/lib/ext" />
 		<copy file="${lib}/comm.jar" todir="${jre}/lib/ext" />
+		<copy file="${lib}/swt/swt-awt-win32-3232.dll" todir="${jre}/bin" />
+		<copy file="${lib}/swt/swt-win32-3232.dll" todir="${jre}/bin" />
 	</target>
 
 	<target name="compile" depends="init">
 		<!-- Compile the java code -->
+		<javac srcdir="${src}" destdir="${bin}" >
+			<classpath>
+				<fileset dir="${lib}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+		<javac srcdir="${test}" destdir="${bin}" >
+			<classpath>
+				<fileset dir="${lib}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
 		<jar destfile="${build}/areyoubillywhizz.jar" basedir="${bin}" />
+	</target>
+
+	<target name="test" depends="compile">
+		<junit printsummary="yes" haltonfailure="yes">
+			<classpath>
+				<pathelement path="${bin}" />
+			</classpath>
+
+			<formatter type="xml"/>
+
+			<batchtest fork="yes" todir="testreports">
+				<fileset dir="${test}">
+					<include name="**/*Test*.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
 	</target>
 
 </project>
