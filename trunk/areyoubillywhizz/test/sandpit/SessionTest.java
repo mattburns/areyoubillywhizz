@@ -1,6 +1,8 @@
 package sandpit;
 
-import sandpit.Solve.ResultType;
+import timer.Session;
+import timer.Solve;
+import timer.Solve.ResultType;
 import junit.framework.TestCase;
 
 public class SessionTest extends TestCase {
