@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import sandpit.TimerEventHandler;
+import timer.TimerEventHandlerImpl;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
@@ -42,7 +42,7 @@ import com.cloudgarden.resource.SWTResourceManager;
 */
 public class App extends org.eclipse.swt.widgets.Composite {
 
-	TimerEventHandler timer = new TimerEventHandler();
+	TimerEventHandlerImpl timer = new TimerEventHandlerImpl();
 
 	private Composite averageTimes;
 	private Label currentAverageValue;
@@ -321,7 +321,7 @@ public class App extends org.eclipse.swt.widgets.Composite {
 		App inst = new App(shell, SWT.NULL);
 		Point size = inst.getSize();
 		shell.setLayout(null);
-		shell.setText("Pinpoint");
+		shell.setText("Are You Billy Whizz?");
 		shell.setSize(492, 300);
 		shell.layout();
 		if(size.x == 0 && size.y == 0) {
