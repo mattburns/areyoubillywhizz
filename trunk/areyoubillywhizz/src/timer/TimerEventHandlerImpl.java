@@ -15,7 +15,7 @@ import parser.TimerCodeParser;
 import parser.TimerCodeParser.TimerState;
 import timer.Solve.ResultType;
 
-public class TimerEventHandler {
+public class TimerEventHandlerImpl implements TimerEventHandler {
 
 	private Session session = new Session();
 	Label currentTimeLabel;
@@ -30,11 +30,11 @@ public class TimerEventHandler {
 	boolean canAcceptNextTime = false;
 	Timer timer;
 	
-	public TimerEventHandler() {
+	public TimerEventHandlerImpl() {
 		setTimer(new Timer(this));
 	}
 
-	public void updateWidgets(String scannedInput) {
+	public void processScannedInput(String scannedInput) {
 		scannedInput = scannedInput.substring(
 				scannedInput.length() - 7, scannedInput.length());
 
