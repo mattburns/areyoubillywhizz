@@ -1,4 +1,4 @@
-package sandpit;
+package timer;
 
 import java.util.Date;
 

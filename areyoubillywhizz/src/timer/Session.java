@@ -1,4 +1,4 @@
-package sandpit;
+package timer;
 
 import java.util.ArrayList;
 import java.util.List;

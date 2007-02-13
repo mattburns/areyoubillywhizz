@@ -1,4 +1,4 @@
-package sandpit;
+package timer;
 
 import gui.App.Time;
 
@@ -13,7 +13,7 @@ import com.cloudgarden.resource.SWTResourceManager;
 
 import parser.TimerCodeParser;
 import parser.TimerCodeParser.TimerState;
-import sandpit.Solve.ResultType;
+import timer.Solve.ResultType;
 
 public class TimerEventHandler {
 
