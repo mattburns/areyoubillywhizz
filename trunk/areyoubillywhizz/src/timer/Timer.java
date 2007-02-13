@@ -1,4 +1,4 @@
-package sandpit;
+package timer;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
