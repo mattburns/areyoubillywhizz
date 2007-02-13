@@ -1,18 +1,19 @@
 <?xml version="1.0"?>
-<project name="test" default="buildjnlp" basedir="." xmlns:jw="org.unintelligible.antjnlpwar">
-	<typedef resource="org/unintelligible/antjnlpwar/antjnlpwar.xml" format="xml" uri="org.unintelligible.antjnlpwar">
-		<classpath>
-			<pathelement location="lib/ant-jnlp-war_deps-0.9.jar"/>
-		</classpath>
-	</typedef>
-
+<project name="test" default="compile" basedir=".">
 	<property name="src" value="src"/>
 	<property name="bin" value="bin"/>
+	<property name="lib" value="lib"/>
+	<property name="rxtxbins" value="${lib}/rxtx-2.1-7-bins-r2"/>
+	<!-- this is the one you have to set!!! -->
+	<property name="jre" value="C:/Program Files/Java/jdk1.5.0_10/jre"/>
 	<property name="build" value="build"/>
 
 	<target name="init">
 		<delete dir="${build}"/>
 		<mkdir dir="${build}"/>
+		<copy file="${rxtxbins}/Windows/i368-mingw32/rxtxSerial.dll" todir="${jre}/bin" />
+		<copy file="${rxtxbins}/RXTXcomm.jar" todir="${jre}/lib/ext" />
+		<copy file="${lib}/comm.jar" todir="${jre}/lib/ext" />
 	</target>
 
 	<target name="compile" depends="init">
@@ -20,42 +21,4 @@
 		<jar destfile="${build}/areyoubillywhizz.jar" basedir="${bin}" />
 	</target>
 
-	<target name="buildjnlp" depends="init, compile">
-		<!-- Create a distributable WAR archive of the application using the following attributes:
-         * tofile: the destination WAR file
-         * codebase: where the application will be deployed to
-         * title: the application name
-         * vendor: your company name
-         * pack200: create pack200 archives for quicker client downloads
-         * signStorePass: the password to your Java certificate store (used to sign the jars)
-         * signAlias: the name of the certificate to use (used to sign the jars)
-         -->
-		<jw:jnlpwar
-            tofile="${build}/areyoubillywhizz.jnlp"
-            codebase="http://www.whatever.com/myApplicationName"
-            title="areYouBillyWhizz"
-            vendor="floater"
-			signStorepass="Abithiw2itb"
-            signAlias="aybw" >
-			<!-- Add a normal and a short description -->
-			<jw:description>This is the descriptive text for the product</jw:description>
-			<jw:description kind="short">This is a short descriptive text for the product</jw:description>
-			<!-- Add an icon for the application -->
-			<jw:icon file="images/icon.jpg"/>
-			<!-- Show a splash screen when the application launches -->
-			<jw:icon kind="splash" file="images/splash.jpg"/>
-			<!-- Specify the minimal version of Java required by the app, along with
-                 some command-line arguments -->
-			<jw:j2se minVersion="1.4" args="-Xmx250M">
-				<jw:j2seProperty name="MyApplicationProperty" value="myApplicationPropertyValue"/>
-			</jw:j2se>
-			<!-- Add the libraries used by the application -->
-			<lib dir="lib">
-				<include name="**/*.jar"/>
-			</lib>
-			<!-- Specify the main class for the application,
-                 and the jar it is located in (can be duplicate from the lib element) -->
-			<jw:application mainclass="gui.App" jar="${build}/areyoubillywhizz.jar"/>
-		</jw:jnlpwar>
-	</target>
 </project>
