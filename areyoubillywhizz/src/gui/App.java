@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import timer.TimerEventHandlerImpl;
+import timer.GuiTimerEventHandler;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
@@ -42,7 +42,7 @@ import com.cloudgarden.resource.SWTResourceManager;
 */
 public class App extends org.eclipse.swt.widgets.Composite {
 
-	TimerEventHandlerImpl timer = new TimerEventHandlerImpl();
+	GuiTimerEventHandler timer = new GuiTimerEventHandler();
 
 	private Composite averageTimes;
 	private Label currentAverageValue;
