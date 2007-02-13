@@ -19,7 +19,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 
-import sandpit.Timer;
+import timer.Timer;
 
 
 /**
