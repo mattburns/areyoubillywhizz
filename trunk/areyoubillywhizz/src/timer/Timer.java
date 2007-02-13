@@ -8,11 +8,6 @@ import gnu.io.SerialPortEventListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 
 import parser.TimerCodeParser;
 import parser.TimerCodeParser.TimerState;
@@ -91,7 +86,7 @@ public class Timer implements Runnable, SerialPortEventListener {
 				// System.out.println("scanned input length:" +
 				// scannedInput.length());
 				if (TimerCodeParser.isValid(scannedInput)) {
-					timerEventHandler.updateWidgets(scannedInput);
+					timerEventHandler.processScannedInput(scannedInput);
 				}
 				inputStream.close();
 			} catch (IOException e) {
