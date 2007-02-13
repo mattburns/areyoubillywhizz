@@ -37,9 +37,8 @@ public class Timer implements Runnable, SerialPortEventListener {
 	
 	TimerEventHandler timerEventHandler;
 
-	public Timer(TimerEventHandler timerEventHandler) {
+	public Timer() {
 		try {
-			this.timerEventHandler = timerEventHandler;
 			portId1 = CommPortIdentifier.getPortIdentifier("COM1");
 			TimeStamp = new java.util.Date().toString();
 			serialPort1 = (SerialPort) portId1.open("ComControl", 2000);
@@ -82,11 +81,10 @@ public class Timer implements Runnable, SerialPortEventListener {
 				scannedInput = scannedInput.substring(
 						scannedInput.length() - 7, scannedInput.length());
 
-//			 System.out.println("scanned input received:" + scannedInput);
-				// System.out.println("scanned input length:" +
-				// scannedInput.length());
-				if (TimerCodeParser.isValid(scannedInput)) {
-					timerEventHandler.processScannedInput(scannedInput);
+				if (timerEventHandler != null) {
+					if (TimerCodeParser.isValid(scannedInput)) {
+						timerEventHandler.processScannedInput(scannedInput);
+					}
 				}
 				inputStream.close();
 			} catch (IOException e) {
@@ -127,5 +125,9 @@ public class Timer implements Runnable, SerialPortEventListener {
 
 	public void setState(TimerState state) {
 		this.state = state;
+	}
+	
+	public void registerTimerEventHandler(TimerEventHandler timerEventHandler) {
+		this.timerEventHandler = timerEventHandler;
 	}
 }

@@ -15,98 +15,109 @@ import parser.TimerCodeParser;
 import parser.TimerCodeParser.TimerState;
 import timer.Solve.ResultType;
 
-public class TimerEventHandlerImpl implements TimerEventHandler {
+public class GuiTimerEventHandler implements TimerEventHandler {
 
 	private Session session = new Session();
+
 	Label currentTimeLabel;
+
 	Label currentAverageLabel;
+
 	List<Time> times;
+
 	Button leftButton;
+
 	Button rightButton;
+
 	long jiffys;
+
 	TimerState state = TimerState.OFF;
+
 	final static Color GREEN = SWTResourceManager.getColor(128, 255, 128);
+
 	final static Color GRAY = SWTResourceManager.getColor(224, 223, 227);
+
 	boolean canAcceptNextTime = false;
+
 	Timer timer;
-	
-	public TimerEventHandlerImpl() {
-		setTimer(new Timer(this));
+
+	public GuiTimerEventHandler() {
+		setTimer(new Timer());
+		getTimer().registerTimerEventHandler(this);
 	}
 
 	public void processScannedInput(String scannedInput) {
-		scannedInput = scannedInput.substring(
-				scannedInput.length() - 7, scannedInput.length());
-
-		if (TimerCodeParser.isValid(scannedInput)) {
-			final String si = scannedInput;
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					currentTimeLabel.setText("0" + si.substring(1, 2) + ":"
-							+ si.substring(2, 4) + "." + si.substring(4, 6));
-					TimerState state = TimerCodeParser.getState(si);
-					if (getState() != state) {
-						leftButton.setText("left");
-						rightButton.setText("right");
-						switch (state) {
-						case(LEFT):
-							leftButton.setVisible(true);
-							rightButton.setVisible(false);	
-							break;
-						case(RIGHT):
-							leftButton.setVisible(false);
-							rightButton.setVisible(true);
-							break;
-						case(STANDBY):
-							leftButton.setText("GO!!");
-							rightButton.setText("GO!!");
-						case(BOTH):
-							leftButton.setVisible(true);
-							rightButton.setVisible(true);
-							break;
-						case(OFF):
-						case(STOPPED):
-							if (canAcceptNextTime) {
-								session.getAttempts().add(new Solve((int)TimerCodeParser.getJiffys(si), ResultType.SOLVED));
-							    currentAverageLabel.setText(TimerCodeParser.jiffysToDisplay(session.getCurrentAverage()));
-							    updateScreenTimes(session, times);
-							}
-						    canAcceptNextTime = false;
-						    leftButton.setVisible(false);
-							rightButton.setVisible(false);
-						    break;
-						case(RUNNING):
-						case(RESET):
-							canAcceptNextTime = true;
-							leftButton.setVisible(false);
-							rightButton.setVisible(false);
-							break;
+		final String si = scannedInput;
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				currentTimeLabel.setText("0" + si.substring(1, 2) + ":"
+						+ si.substring(2, 4) + "." + si.substring(4, 6));
+				TimerState state = TimerCodeParser.getState(si);
+				if (getState() != state) {
+					leftButton.setText("left");
+					rightButton.setText("right");
+					switch (state) {
+					case (LEFT):
+						leftButton.setVisible(true);
+						rightButton.setVisible(false);
+						break;
+					case (RIGHT):
+						leftButton.setVisible(false);
+						rightButton.setVisible(true);
+						break;
+					case (STANDBY):
+						leftButton.setText("GO!!");
+						rightButton.setText("GO!!");
+					case (BOTH):
+						leftButton.setVisible(true);
+						rightButton.setVisible(true);
+						break;
+					case (OFF):
+					case (STOPPED):
+						if (canAcceptNextTime) {
+							session.getAttempts().add(
+									new Solve((int) TimerCodeParser
+											.getJiffys(si), ResultType.SOLVED));
+							currentAverageLabel.setText(TimerCodeParser
+									.jiffysToDisplay(session
+											.getCurrentAverage()));
+							updateScreenTimes(session, times);
 						}
+						canAcceptNextTime = false;
+						leftButton.setVisible(false);
+						rightButton.setVisible(false);
+						break;
+					case (RUNNING):
+					case (RESET):
+						canAcceptNextTime = true;
+						leftButton.setVisible(false);
+						rightButton.setVisible(false);
+						break;
 					}
-					setState(state);
 				}
-			});
-			
-			setJiffys(TimerCodeParser.getJiffys(scannedInput));
+				setState(state);
+			}
+		});
 
-		}
+		setJiffys(TimerCodeParser.getJiffys(scannedInput));
 	}
-	
+
 	public void close() {
 		setTimer(null);
 	}
 
 	private void updateScreenTimes(Session session, List<Time> screenTimes) {
 		List<Solve> dateOrderedAttempts = session.getDateOrderedAttempts();
-		
-		int first = screenTimes.size() > dateOrderedAttempts.size() ? 0 : dateOrderedAttempts.size() - screenTimes.size();
+
+		int first = screenTimes.size() > dateOrderedAttempts.size() ? 0
+				: dateOrderedAttempts.size() - screenTimes.size();
 		int last = dateOrderedAttempts.size();
 		List<Solve> screenSolves = dateOrderedAttempts.subList(first, last);
-		
+
 		List<Solve> speedOrderAttempts = Session.sortByTime(true, screenSolves);
 		String newValue = "";
 		for (int i = 0; i < screenTimes.size(); i++) {
-			Color colour = SWTResourceManager.getColor(0,0,0);
+			Color colour = SWTResourceManager.getColor(0, 0, 0);
 			if (i + screenSolves.size() < screenTimes.size()) {
 				newValue = "na";
 			} else {
@@ -114,10 +125,11 @@ public class TimerEventHandlerImpl implements TimerEventHandler {
 				Solve solve = screenSolves.get(screenSolves.size() - index);
 				int jiffys = solve.getTime();
 				if (screenSolves.size() >= screenTimes.size()) {
-					if (solve == speedOrderAttempts.get(speedOrderAttempts.size()-1))
-						colour = SWTResourceManager.getColor(0,255,0);
+					if (solve == speedOrderAttempts.get(speedOrderAttempts
+							.size() - 1))
+						colour = SWTResourceManager.getColor(0, 255, 0);
 					if (solve == speedOrderAttempts.get(0))
-						colour = SWTResourceManager.getColor(255,0,0);
+						colour = SWTResourceManager.getColor(255, 0, 0);
 				}
 				newValue = TimerCodeParser.jiffysToDisplay(jiffys);
 			}
@@ -125,7 +137,7 @@ public class TimerEventHandlerImpl implements TimerEventHandler {
 			screenTimes.get(i).value.setForeground(colour);
 		}
 	}
-	
+
 	public Label getCurrentTimeLabel() {
 		return currentTimeLabel;
 	}
