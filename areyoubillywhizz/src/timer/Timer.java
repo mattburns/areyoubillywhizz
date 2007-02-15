@@ -13,121 +13,122 @@ import parser.TimerCodeParser;
 import parser.TimerCodeParser.TimerState;
 
 public class Timer implements Runnable, SerialPortEventListener {
-	
-	private boolean shutdownFlag = false;
-	
-	static CommPortIdentifier portId1;
 
-	static CommPortIdentifier portId2;
+    private boolean shutdownFlag = false;
 
-	InputStream inputStream;
+    static CommPortIdentifier portId1;
 
-	OutputStream outputStream;
+    static CommPortIdentifier portId2;
 
-	SerialPort serialPort1, serialPort2;
+    InputStream inputStream;
 
-	Thread readThread;
+    OutputStream outputStream;
 
-	protected String divertCode = "10";
+    SerialPort serialPort1, serialPort2;
 
-	static String TimeStamp;
-	
-	long jiffys;
-	TimerState state = TimerState.OFF;
-	
-	TimerEventHandler timerEventHandler;
+    Thread readThread;
 
-	public Timer() {
-		try {
-			portId1 = CommPortIdentifier.getPortIdentifier("COM1");
-			TimeStamp = new java.util.Date().toString();
-			serialPort1 = (SerialPort) portId1.open("ComControl", 2000);
-			inputStream = serialPort1.getInputStream();
-			serialPort1.addEventListener(this);
-			serialPort1.notifyOnDataAvailable(true);
-			serialPort1.setSerialPortParams(1200, SerialPort.DATABITS_8,
-					SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-			serialPort1.setDTR(false);
-			serialPort1.setRTS(false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    protected String divertCode = "10";
 
-		readThread = new Thread(this);
-		readThread.start();
-	}
+    static String TimeStamp;
 
-	public void serialEvent(SerialPortEvent event) {
-		switch (event.getEventType()) {
-		case SerialPortEvent.BI:
-		case SerialPortEvent.OE:
-		case SerialPortEvent.FE:
-		case SerialPortEvent.PE:
-		case SerialPortEvent.CD:
-		case SerialPortEvent.CTS:
-		case SerialPortEvent.DSR:
-		case SerialPortEvent.RI:
-		case SerialPortEvent.OUTPUT_BUFFER_EMPTY:
-			break;
-		case SerialPortEvent.DATA_AVAILABLE:
-			StringBuffer readBuffer = new StringBuffer();
-			int c;
-			try {
-				while ((c = inputStream.read()) != 10) {
-					if (c != 13)
-						readBuffer.append((char) c);
-				}
-				String scannedInput = readBuffer.toString();
-				scannedInput = scannedInput.substring(
-						scannedInput.length() - 7, scannedInput.length());
+    long jiffys;
 
-				if (timerEventHandler != null) {
-					if (TimerCodeParser.isValid(scannedInput)) {
-						timerEventHandler.processScannedInput(scannedInput);
-					}
-				}
-				inputStream.close();
-			} catch (IOException e) {
-			}
+    TimerState state = TimerState.OFF;
 
-			break;
-		}
-	}
+    TimerEventHandler timerEventHandler;
 
-	public void run() {
-		try {
-			if (shutdownFlag) {
-				throw new InterruptedException();
-			}
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-		}
-	}
-	
-	public void stop() {
-		serialPort1.close();
-		readThread.interrupt();
-		readThread = null;
-		inputStream = null;
-	}
+    public Timer() {
+        try {
+            portId1 = CommPortIdentifier.getPortIdentifier("COM1");
+            TimeStamp = new java.util.Date().toString();
+            serialPort1 = (SerialPort) portId1.open("ComControl", 2000);
+            inputStream = serialPort1.getInputStream();
+            serialPort1.addEventListener(this);
+            serialPort1.notifyOnDataAvailable(true);
+            serialPort1.setSerialPortParams(1200, SerialPort.DATABITS_8,
+                    SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+            serialPort1.setDTR(false);
+            serialPort1.setRTS(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	public long getJiffys() {
-		return jiffys;
-	}
+        readThread = new Thread(this);
+        readThread.start();
+    }
 
-	public void setJiffys(long millis) {
-		this.jiffys = millis;
-	}
+    public void serialEvent(SerialPortEvent event) {
+        switch (event.getEventType()) {
+        case SerialPortEvent.BI:
+        case SerialPortEvent.OE:
+        case SerialPortEvent.FE:
+        case SerialPortEvent.PE:
+        case SerialPortEvent.CD:
+        case SerialPortEvent.CTS:
+        case SerialPortEvent.DSR:
+        case SerialPortEvent.RI:
+        case SerialPortEvent.OUTPUT_BUFFER_EMPTY:
+            break;
+        case SerialPortEvent.DATA_AVAILABLE:
+            StringBuffer readBuffer = new StringBuffer();
+            int c;
+            try {
+                while ((c = inputStream.read()) != 10) {
+                    if (c != 13)
+                        readBuffer.append((char) c);
+                }
+                String scannedInput = readBuffer.toString();
+                scannedInput = scannedInput.substring(
+                        scannedInput.length() - 7, scannedInput.length());
 
-	public TimerState getState() {
-		return state;
-	}
+                if (timerEventHandler != null) {
+                    if (TimerCodeParser.isValid(scannedInput)) {
+                        timerEventHandler.processScannedInput(scannedInput);
+                    }
+                }
+                inputStream.close();
+            } catch (IOException e) {
+            }
 
-	public void setState(TimerState state) {
-		this.state = state;
-	}
-	
-	public void registerTimerEventHandler(TimerEventHandler timerEventHandler) {
-		this.timerEventHandler = timerEventHandler;
-	}
+            break;
+        }
+    }
+
+    public void run() {
+        try {
+            if (shutdownFlag) {
+                throw new InterruptedException();
+            }
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+        }
+    }
+
+    public void stop() {
+        serialPort1.close();
+        readThread.interrupt();
+        readThread = null;
+        inputStream = null;
+    }
+
+    public long getJiffys() {
+        return jiffys;
+    }
+
+    public void setJiffys(long millis) {
+        this.jiffys = millis;
+    }
+
+    public TimerState getState() {
+        return state;
+    }
+
+    public void setState(TimerState state) {
+        this.state = state;
+    }
+
+    public void registerTimerEventHandler(TimerEventHandler timerEventHandler) {
+        this.timerEventHandler = timerEventHandler;
+    }
 }
