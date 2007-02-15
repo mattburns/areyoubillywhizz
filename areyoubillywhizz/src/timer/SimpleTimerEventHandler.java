@@ -1,5 +1,6 @@
 package timer;
 
+import gui.DisplayUpdateHandler;
 import parser.TimerCodeParser;
 import parser.TimerCodeParser.TimerState;
 import timer.Solve.ResultType;
@@ -14,8 +15,12 @@ public class SimpleTimerEventHandler implements TimerEventHandler {
     boolean rightPressed;
 
     boolean canAcceptNextTime = false;
-
+    
+    DisplayUpdateHandler displayUpdateHandler;
+    
     public void processScannedInput(String scannedInput) {
+        displayUpdateHandler.newTimeString(TimerCodeParser.jiffysToDisplay(
+                (int)TimerCodeParser.getJiffys(scannedInput)));
         TimerState newState = TimerCodeParser.getState(scannedInput);
         TimerState oldState = state;
         state = newState;
@@ -57,5 +62,9 @@ public class SimpleTimerEventHandler implements TimerEventHandler {
                 break;
             }
         }
+    }
+    
+    public void registerDisplayUpdateHandler(DisplayUpdateHandler displayUpdateHandler) {
+        this.displayUpdateHandler = displayUpdateHandler;
     }
 }
