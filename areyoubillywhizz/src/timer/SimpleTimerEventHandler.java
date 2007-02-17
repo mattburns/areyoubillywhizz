@@ -9,6 +9,8 @@ public class SimpleTimerEventHandler implements TimerEventHandler {
     private Session session = new Session();
 
     TimerState state = TimerState.OFF;
+    
+    long currentJiffys = 0;
 
     boolean leftPressed;
 
@@ -19,8 +21,8 @@ public class SimpleTimerEventHandler implements TimerEventHandler {
     DisplayUpdateHandler displayUpdateHandler;
     
     public void processScannedInput(String scannedInput) {
-        displayUpdateHandler.newTimeString(TimerCodeParser.jiffysToDisplay(
-                (int)TimerCodeParser.getJiffys(scannedInput)));
+        currentJiffys = TimerCodeParser.getJiffys(scannedInput);
+        displayUpdateHandler.newTimeString(TimerCodeParser.jiffysToDisplay(currentJiffys));
         TimerState newState = TimerCodeParser.getState(scannedInput);
         TimerState oldState = state;
         state = newState;

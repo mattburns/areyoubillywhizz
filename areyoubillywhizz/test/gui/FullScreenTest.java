@@ -1,9 +1,8 @@
 package gui;
 
-import parser.TimerCodeParser;
+import junit.framework.TestCase;
 import timer.SimpleTimerEventHandler;
 import timer.Timer;
-import junit.framework.TestCase;
 
 public class FullScreenTest extends TestCase {
 
@@ -20,11 +19,6 @@ public class FullScreenTest extends TestCase {
         steh.registerDisplayUpdateHandler(fullScreen);
         for (int i = 0 ; i < 1000 ; i++){
 
-
-//        for (int i = 0 ; i < 300 ; i++){
-//            fullScreen.newTimeString(TimerCodeParser.jiffysToDisplay(i));
-//            Thread.sleep(10);
-//        }
         Thread.sleep(10);
         }
 

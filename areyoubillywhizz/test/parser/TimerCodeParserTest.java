@@ -42,12 +42,12 @@ public class TimerCodeParserTest extends TestCase {
     }
 
     public void testJiffysToString() {
-        int min = 100 * 60;
+        long min = 100 * 60;
         assertEquals("01:00.00", TimerCodeParser.jiffysToDisplay(min));
         assertEquals("01:12.34", TimerCodeParser.jiffysToDisplay(min + 1234));
         assertEquals("00:12.34", TimerCodeParser.jiffysToDisplay(1234));
         assertEquals("00:00.00", TimerCodeParser.jiffysToDisplay(0));
-        int max = 100 * 60 * 9 + 5999;
+        long max = 100 * 60 * 9 + 5999;
         assertEquals("09:59.99", TimerCodeParser.jiffysToDisplay(max));
     }
 }
