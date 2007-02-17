@@ -7,5 +7,6 @@
 	<classpathentry path="lib/comm.jar" kind="lib"/>
 	<classpathentry path="lib/junit.jar" kind="lib"/>
 	<classpathentry path="lib/swt.jar" kind="lib"/>
+	<classpathentry path="lib/ant-junit.jar" kind="lib"/>
 	<classpathentry path="bin" kind="output"/>
 </classpath>

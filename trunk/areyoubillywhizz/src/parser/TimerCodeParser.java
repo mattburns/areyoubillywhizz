@@ -1,7 +1,5 @@
 package parser;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,10 +33,10 @@ public class TimerCodeParser {
         return jiffys;
     }
 
-    public static String jiffysToDisplay(int jiffys) {
-        int mins = jiffys / (100 * 60);
-        int secs = (jiffys / 100) % 60;
-        int jifs = (jiffys % (100 * 6)) % 100;
+    public static String jiffysToDisplay(long jiffys) {
+        long mins = jiffys / (100 * 60);
+        long secs = (jiffys / 100) % 60;
+        long jifs = (jiffys % (100 * 6)) % 100;
 
         return String.format("%1$02d:%2$02d.%3$02d", mins, secs, jifs);
     }
