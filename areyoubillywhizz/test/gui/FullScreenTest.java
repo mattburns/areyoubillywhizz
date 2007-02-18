@@ -17,7 +17,7 @@ public class FullScreenTest extends TestCase {
         
         t.registerTimerEventHandler(steh);
         steh.registerDisplayUpdateHandler(fullScreen);
-        for (int i = 0 ; i < 1000 ; i++){
+        for (int i = 0 ; i < 100 ; i++){
 
         Thread.sleep(10);
         }
