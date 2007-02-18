@@ -11,7 +11,7 @@ import java.awt.image.BufferStrategy;
 
 public class FullScreen implements DisplayUpdateHandler {
 
-    private String time = "init";
+    private String time = "00:00.00";
 
     private Frame frame;
 

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="test" default="test" basedir=".">
+<project name="areyoubillywhizz" default="incrementbuild" basedir=".">
 	<property name="src" value="src"/>
 	<property name="test" value="test"/>
 	<property name="testreports" value="testreports"/>
@@ -56,6 +56,25 @@
 				</fileset>
 			</batchtest>
 		</junit>
+	</target>
+	
+	<target name="incrementmajor" depends="test">
+		  <propertyfile file="version.properties">
+		  	<entry key="major" type="int" operation="+" value="1" pattern="0"/>
+		  	<entry key="minor" value="0"/>
+		  	<entry key="build" value="0"/>
+		  </propertyfile>
+	</target>
+	<target name="incrementminor" depends="test">
+		  <propertyfile file="version.properties">
+		  	<entry key="minor" type="int" operation="+" value="1" pattern="0"/>
+		  	<entry key="build" value="0"/>
+		  </propertyfile>
+	</target>
+	<target name="incrementbuild" depends="test">
+		  <propertyfile file="version.properties">
+		  	<entry key="build" type="int" operation="+" value="1" pattern="0"/>
+		  </propertyfile>
 	</target>
 
 </project>
