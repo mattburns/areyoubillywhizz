@@ -9,9 +9,15 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.image.BufferStrategy;
 
+import parser.TimerCodeParser.TimerState;
+
+import timer.Session;
+
 public class FullScreen implements DisplayUpdateHandler {
 
     private String time = "00:00.00";
+    
+    private Color fontColour = Color.RED;
 
     private Frame frame;
 
@@ -43,7 +49,7 @@ public class FullScreen implements DisplayUpdateHandler {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, bounds.width, bounds.height);
             
-            g.setColor(Color.RED);
+            g.setColor(fontColour);
             g.setFont(new Font("DS-Digital", Font.BOLD, 330));
             g.drawString(time, 100, 500);
             
@@ -56,18 +62,24 @@ public class FullScreen implements DisplayUpdateHandler {
     }
 
     public void newTimeString(String time) {
-        // TODO Auto-generated method stub
         this.time = time;
         render();
     }
 
     public void newLeftState(boolean isPressed) {
-        // TODO Auto-generated method stub
-
     }
 
     public void newRightState(boolean isPressed) {
-        // TODO Auto-generated method stub
+    }
 
+    public void newSession(Session session) {
+    }
+
+    public void newState(TimerState state) {
+        if (state == TimerState.STANDBY) {
+            fontColour = Color.GREEN;
+        } else {
+            fontColour = Color.RED;
+        }
     }
 }
