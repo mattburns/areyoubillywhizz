@@ -39,7 +39,12 @@
 				</fileset>
 			</classpath>
 		</javac>
-		<jar destfile="${build}/areyoubillywhizz.jar" basedir="${bin}" />
+		<jar destfile="${build}/areyoubillywhizz.jar" basedir="${bin}">
+		    <manifest>
+		      <attribute name="Built-By" value="Matt Burns"/>
+		      <attribute name="Main-Class" value="gui.App"/>
+		    </manifest>
+		</jar>
 	</target>
 
 	<target name="test" depends="compile">

@@ -7,6 +7,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -24,29 +25,23 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import timer.GuiTimerEventHandler;
+import parser.TimerCodeParser;
+import parser.TimerCodeParser.TimerState;
+import timer.Session;
+import timer.Solve;
+import timer.TimerEventHandler;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
-/**
- * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
- * Builder, which is free for non-commercial use. If Jigloo is being used
- * commercially (ie, by a corporation, company or business for any purpose
- * whatever) then you should purchase a license for each developer using Jigloo.
- * Please visit www.cloudgarden.com for details. Use of Jigloo implies
- * acceptance of these licensing terms. A COMMERCIAL LICENSE HAS NOT BEEN
- * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
- * ANY CORPORATE OR COMMERCIAL PURPOSE.
- */
-public class App extends org.eclipse.swt.widgets.Composite {
-
-    GuiTimerEventHandler timer = new GuiTimerEventHandler();
+public class App extends org.eclipse.swt.widgets.Composite implements DisplayUpdateHandler {
 
     private Composite averageTimes;
 
     private Label currentAverageValue;
 
     private Label label1;
+    
+    FullScreen fullScreen;
 
     private Composite currentAverage;
 
@@ -58,8 +53,12 @@ public class App extends org.eclipse.swt.widgets.Composite {
 
     private List<Time> times;
 
-    private Menu menu1;
+    private Menu menuBar;
 
+    private MenuItem viewMenuItem;
+    private Menu viewMenu;
+    private MenuItem fullscreenMenuItem;
+    
     private MenuItem aboutMenuItem;
 
     private MenuItem contentsMenuItem;
@@ -78,7 +77,7 @@ public class App extends org.eclipse.swt.widgets.Composite {
 
     private CCombo event;
 
-    public Label CurrentTime;
+    public Label currentTime;
 
     private Group scrambleGroup;
 
@@ -89,6 +88,8 @@ public class App extends org.eclipse.swt.widgets.Composite {
     private MenuItem menuItem13;
 
     private MenuItem fileMenuItem;
+    
+    private TimerEventHandler timerEventHandler;
 
     {
         // Register as a resource user - SWTResourceManager will
@@ -96,9 +97,10 @@ public class App extends org.eclipse.swt.widgets.Composite {
         SWTResourceManager.registerResourceUser(this);
     }
 
-    public App(Composite parent, int style) {
+    public App(Composite parent, int style, TimerEventHandler timerEventHandler) {
         super(parent, style);
         initGUI();
+        this.timerEventHandler = timerEventHandler;
     }
 
     /**
@@ -160,19 +162,19 @@ public class App extends org.eclipse.swt.widgets.Composite {
                 leftPad.setText("Left");
             }
             {
-                CurrentTime = new Label(this, SWT.VERTICAL);
-                CurrentTime.setAlignment(SWT.CENTER);
-                CurrentTime.setText("00:00.00");
-                CurrentTime.setBackground(SWTResourceManager.getColor(0, 0, 0));
-                CurrentTime.setFont(SWTResourceManager.getFont("DS-Digital",
+                currentTime = new Label(this, SWT.VERTICAL);
+                currentTime.setAlignment(SWT.CENTER);
+                currentTime.setText("00:00.00");
+                currentTime.setBackground(SWTResourceManager.getColor(0, 0, 0));
+                currentTime.setFont(SWTResourceManager.getFont("DS-Digital",
                         72, 3, false, false));
                 GridData CurrentTimeLData = new GridData();
                 CurrentTimeLData.horizontalSpan = 3;
                 CurrentTimeLData.verticalAlignment = GridData.FILL;
                 CurrentTimeLData.horizontalAlignment = GridData.FILL;
                 CurrentTimeLData.grabExcessHorizontalSpace = true;
-                CurrentTime.setLayoutData(CurrentTimeLData);
-                CurrentTime.setForeground(SWTResourceManager
+                currentTime.setLayoutData(CurrentTimeLData);
+                currentTime.setForeground(SWTResourceManager
                         .getColor(255, 0, 0));
             }
             {
@@ -236,66 +238,69 @@ public class App extends org.eclipse.swt.widgets.Composite {
                     averageTimesLData.grabExcessHorizontalSpace = true;
                     averageTimes.setLayoutData(averageTimesLData);
                     averageTimes.setLayout(averageTimesLayout);
-                    times = createTimes(averageTimes, timer.getSession()
-                            .getSolvesOnScreen());
+                    times = createTimes(averageTimes, 10);
 
                 }
             }
 
             {
-                menu1 = new Menu(getShell(), SWT.BAR);
-                getShell().setMenuBar(menu1);
-                {
-                    fileMenuItem = new MenuItem(menu1, SWT.CASCADE);
-                    fileMenuItem.setText("File");
-                    {
-                        fileMenu = new Menu(fileMenuItem);
-                        {
-                            openFileMenuItem = new MenuItem(fileMenu,
-                                    SWT.CASCADE);
-                            openFileMenuItem.setText("Clear");
-                        }
-                        {
-                            menuItem13 = new MenuItem(fileMenu, SWT.SEPARATOR);
-                            menuItem13.setText("menuItem13");
-                        }
-                        {
-                            exitMenuItem = new MenuItem(fileMenu, SWT.CASCADE);
-                            exitMenuItem.setText("Exit");
-                        }
-                        fileMenuItem.setMenu(fileMenu);
-                    }
-                }
+                menuBar = new Menu(getShell(), SWT.BAR);
+                getShell().setMenuBar(menuBar);
+                fileMenuItem = new MenuItem(menuBar, SWT.CASCADE);
+                fileMenuItem.setText("File");
+                fileMenu = new Menu(fileMenuItem);
+                openFileMenuItem = new MenuItem(fileMenu,
+                        SWT.CASCADE);
+                openFileMenuItem.setText("Clear");
+                menuItem13 = new MenuItem(fileMenu, SWT.SEPARATOR);
+                menuItem13.setText("menuItem13");
+                exitMenuItem = new MenuItem(fileMenu, SWT.CASCADE);
+                exitMenuItem.setText("Exit");
+                fileMenuItem.setMenu(fileMenu);
                 exitMenuItem.addSelectionListener(new SelectionAdapter() {
                     public void widgetSelected(SelectionEvent event) {
-                        timer.close();
                         getShell().close(); // calls dispose() - see note below
                     }
                 });
-                {
-                    helpMenuItem = new MenuItem(menu1, SWT.CASCADE);
-                    helpMenuItem.setText("Help");
-                    {
-                        helpMenu = new Menu(helpMenuItem);
-                        {
-                            contentsMenuItem = new MenuItem(helpMenu,
-                                    SWT.CASCADE);
-                            contentsMenuItem.setText("Contents");
-                        }
-                        {
-                            aboutMenuItem = new MenuItem(helpMenu, SWT.CASCADE);
-                            aboutMenuItem.setText("About");
-                        }
-                        helpMenuItem.setMenu(helpMenu);
+                viewMenuItem = new MenuItem(menuBar, SWT.CASCADE);
+                viewMenuItem.setText("View");
+                viewMenu = new Menu(viewMenuItem);
+                viewMenuItem.setMenu(viewMenu);
+                fullscreenMenuItem = new MenuItem(viewMenu,
+                        SWT.CASCADE);
+                fullscreenMenuItem.setText("Fullscreen");
+                fullscreenMenuItem.addSelectionListener(new SelectionAdapter() {
+                    public void widgetSelected(SelectionEvent event) {
+                        fullScreen = new FullScreen();
+                        timerEventHandler.registerDisplayUpdateHandler(fullScreen);
                     }
-                }
+                });
+                
+                helpMenuItem = new MenuItem(menuBar, SWT.CASCADE);
+                helpMenuItem.setText("Help");
+                helpMenu = new Menu(helpMenuItem);
+                contentsMenuItem = new MenuItem(helpMenu,
+                        SWT.CASCADE);
+                contentsMenuItem.setText("Contents");
+                aboutMenuItem = new MenuItem(helpMenu, SWT.CASCADE);
+                aboutMenuItem.setText("About");
+                helpMenuItem.setMenu(helpMenu);
             }
-            timer.setCurrentTimeLabel(CurrentTime);
-            timer.setLeftButton(leftPad);
-            timer.setRightButton(rightPad);
-            timer.setCurrentAverageLabel(currentAverageValue);
-            timer.setTimes(times);
 
+            Point size = this.getSize();
+            Shell shell = (Shell)this.getParent();
+            shell.setLayout(null);
+            shell.setText("Are You Billy Whizz?");
+            shell.setSize(492, 300);
+            shell.layout();
+            if (size.x == 0 && size.y == 0) {
+                this.pack();
+                shell.pack();
+            } else {
+                Rectangle shellBounds = shell.computeTrim(0, 0, size.x, size.y);
+                shell.setSize(shellBounds.width, shellBounds.height);
+            }
+            shell.open();
             this.layout();
         } catch (Exception e) {
             e.printStackTrace();
@@ -329,40 +334,88 @@ public class App extends org.eclipse.swt.widgets.Composite {
         return times;
     }
 
-    /**
-     * Auto-generated main method to display this
-     * org.eclipse.swt.widgets.Composite inside a new Shell.
-     */
-    public static void main(String[] args) {
-        Display display = Display.getDefault();
-        Shell shell = new Shell(display);
-        App inst = new App(shell, SWT.NULL);
-        Point size = inst.getSize();
-        shell.setLayout(null);
-        shell.setText("Are You Billy Whizz?");
-        shell.setSize(492, 300);
-        shell.layout();
-        if (size.x == 0 && size.y == 0) {
-            inst.pack();
-            shell.pack();
-        } else {
-            Rectangle shellBounds = shell.computeTrim(0, 0, size.x, size.y);
-            shell.setSize(shellBounds.width, shellBounds.height);
-        }
-        shell.open();
-
-        while (!shell.isDisposed()) {
-            if (!display.readAndDispatch())
-                display.sleep();
-        }
-    }
-
     public class Time {
         public Label value;
 
         public Label label;
 
         public Composite container;
+    }
+    
+    private void updateScreenTimes(Session session, List<Time> screenTimes) {
+        List<Solve> dateOrderedAttempts = session.getDateOrderedAttempts();
+
+        int first = screenTimes.size() > dateOrderedAttempts.size() ? 0
+                : dateOrderedAttempts.size() - screenTimes.size();
+        int last = dateOrderedAttempts.size();
+        List<Solve> screenSolves = dateOrderedAttempts.subList(first, last);
+
+        List<Solve> speedOrderAttempts = Session.sortByTime(true, screenSolves);
+        String newValue = "";
+        for (int i = 0; i < screenTimes.size(); i++) {
+            Color colour = SWTResourceManager.getColor(0, 0, 0);
+            if (i + screenSolves.size() < screenTimes.size()) {
+                newValue = "na";
+            } else {
+                int index = (screenTimes.size() - i);
+                Solve solve = screenSolves.get(screenSolves.size() - index);
+                int jiffys = solve.getTime();
+                if (screenSolves.size() >= screenTimes.size()) {
+                    if (solve == speedOrderAttempts.get(speedOrderAttempts
+                            .size() - 1))
+                        colour = SWTResourceManager.getColor(0, 255, 0);
+                    if (solve == speedOrderAttempts.get(0))
+                        colour = SWTResourceManager.getColor(255, 0, 0);
+                }
+                newValue = TimerCodeParser.jiffysToDisplay(jiffys);
+            }
+            screenTimes.get(i).value.setText(newValue);
+            screenTimes.get(i).value.setForeground(colour);
+        }
+    }
+
+    public void newTimeString(String time) {
+        final String finalTime = time;
+        Display.getDefault().asyncExec(new Runnable() {
+            public void run() {
+                currentTime.setText(finalTime);
+            }
+        });
+    }
+
+    public void newLeftState(boolean isPressed) {
+        final boolean finalIsPressed = isPressed;
+        Display.getDefault().asyncExec(new Runnable() {
+            public void run() {
+                leftPad.setVisible(finalIsPressed);
+            }
+        });
+    }
+
+    public void newRightState(boolean isPressed) {
+        final boolean finalIsPressed = isPressed;
+        Display.getDefault().asyncExec(new Runnable() {
+            public void run() {
+                rightPad.setVisible(finalIsPressed);
+            }
+        });
+    }
+
+    public void newSession(Session session) {
+        final Session finalSession = session;
+        Display.getDefault().asyncExec(new Runnable() {
+            public void run() {
+                updateScreenTimes(finalSession, times);
+            }
+        });
+    }
+
+    public void newState(TimerState state) {
+//        final TimerState finalState = state;
+//        Display.getDefault().asyncExec(new Runnable() {
+//            public void run() {
+//            }
+//        });
     }
 
 }

@@ -1,5 +1,8 @@
 package timer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gui.DisplayUpdateHandler;
 import parser.TimerCodeParser;
 import parser.TimerCodeParser.TimerState;
@@ -18,11 +21,10 @@ public class SimpleTimerEventHandler implements TimerEventHandler {
 
     boolean canAcceptNextTime = false;
     
-    DisplayUpdateHandler displayUpdateHandler;
+    List<DisplayUpdateHandler> displayUpdateHandlers;
     
     public void processScannedInput(String scannedInput) {
         currentJiffys = TimerCodeParser.getJiffys(scannedInput);
-        displayUpdateHandler.newTimeString(TimerCodeParser.jiffysToDisplay(currentJiffys));
         TimerState newState = TimerCodeParser.getState(scannedInput);
         TimerState oldState = state;
         state = newState;
@@ -64,9 +66,23 @@ public class SimpleTimerEventHandler implements TimerEventHandler {
                 break;
             }
         }
+        notifyListenersOfUpdate();
+    }
+    
+    private void notifyListenersOfUpdate() {
+        for (DisplayUpdateHandler handler : displayUpdateHandlers) {
+            handler.newTimeString(TimerCodeParser.jiffysToDisplay(currentJiffys));
+            handler.newLeftState(leftPressed);
+            handler.newRightState(rightPressed);
+            handler.newSession(session);
+            handler.newState(state);
+        }
     }
     
     public void registerDisplayUpdateHandler(DisplayUpdateHandler displayUpdateHandler) {
-        this.displayUpdateHandler = displayUpdateHandler;
+        if (displayUpdateHandlers == null) {
+            displayUpdateHandlers = new ArrayList<DisplayUpdateHandler>();
+        }
+        displayUpdateHandlers.add(displayUpdateHandler);
     }
 }
