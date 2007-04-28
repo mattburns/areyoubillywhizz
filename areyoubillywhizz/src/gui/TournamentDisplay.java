@@ -1,16 +1,14 @@
 package gui;
 
-import com.cloudgarden.resource.SWTResourceManager;
-
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.SWT;
+
+import com.cloudgarden.resource.SWTResourceManager;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI

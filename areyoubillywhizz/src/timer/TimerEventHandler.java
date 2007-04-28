@@ -11,4 +11,6 @@ public interface TimerEventHandler {
     public void processScannedInput(String scannedInput);
     
     public void registerDisplayUpdateHandler(DisplayUpdateHandler displayUpdateHandler);
+    
+    public void deregisterDisplayUpdateHandler(DisplayUpdateHandler displayUpdateHandler);
 }
