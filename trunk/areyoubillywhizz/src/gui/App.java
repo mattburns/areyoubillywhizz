@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -238,7 +240,7 @@ public class App extends org.eclipse.swt.widgets.Composite implements DisplayUpd
                     averageTimesLData.grabExcessHorizontalSpace = true;
                     averageTimes.setLayoutData(averageTimesLData);
                     averageTimes.setLayout(averageTimesLayout);
-                    times = createTimes(averageTimes, 10);
+                    times = createTimes(averageTimes, 5);
 
                 }
             }
@@ -273,6 +275,8 @@ public class App extends org.eclipse.swt.widgets.Composite implements DisplayUpd
                     public void widgetSelected(SelectionEvent event) {
                         fullScreen = new FullScreen();
                         timerEventHandler.registerDisplayUpdateHandler(fullScreen);
+                        KeyListener listener = new KeyListener();
+                        fullScreen.addKeyListener(listener);
                     }
                 });
                 
@@ -342,6 +346,18 @@ public class App extends org.eclipse.swt.widgets.Composite implements DisplayUpd
         public Composite container;
     }
     
+    private class KeyListener extends KeyAdapter {
+        public void keyPressed(KeyEvent e) {
+            exitFullscreen();
+        }
+    }
+    
+    private void exitFullscreen() {
+        timerEventHandler.deregisterDisplayUpdateHandler(fullScreen);
+        fullScreen.dispose();
+        fullScreen = null;   
+    }
+    
     private void updateScreenTimes(Session session, List<Time> screenTimes) {
         List<Solve> dateOrderedAttempts = session.getDateOrderedAttempts();
 
@@ -406,6 +422,9 @@ public class App extends org.eclipse.swt.widgets.Composite implements DisplayUpd
         Display.getDefault().asyncExec(new Runnable() {
             public void run() {
                 updateScreenTimes(finalSession, times);
+                currentAverageValue.setText(
+                        TimerCodeParser.jiffysToDisplay(
+                        finalSession.getCurrentAverage()));
             }
         });
     }

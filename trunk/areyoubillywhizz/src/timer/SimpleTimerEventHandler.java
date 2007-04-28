@@ -85,4 +85,8 @@ public class SimpleTimerEventHandler implements TimerEventHandler {
         }
         displayUpdateHandlers.add(displayUpdateHandler);
     }
+    
+    public void deregisterDisplayUpdateHandler(DisplayUpdateHandler displayUpdateHandler) {
+        displayUpdateHandlers.remove(displayUpdateHandler);
+    }
 }
