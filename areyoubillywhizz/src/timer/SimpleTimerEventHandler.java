@@ -9,7 +9,7 @@ import parser.TimerCodeParser.TimerState;
 import timer.Solve.ResultType;
 
 public class SimpleTimerEventHandler implements TimerEventHandler {
-    private Session session = new Session();
+    private Session session;
 
     TimerState state = TimerState.OFF;
     
@@ -22,6 +22,10 @@ public class SimpleTimerEventHandler implements TimerEventHandler {
     boolean canAcceptNextTime = false;
     
     List<DisplayUpdateHandler> displayUpdateHandlers;
+    
+    public SimpleTimerEventHandler(Session session) {
+        setSession(session);
+    }
     
     public void processScannedInput(String scannedInput) {
         currentJiffys = TimerCodeParser.getJiffys(scannedInput);
@@ -88,5 +92,13 @@ public class SimpleTimerEventHandler implements TimerEventHandler {
     
     public void deregisterDisplayUpdateHandler(DisplayUpdateHandler displayUpdateHandler) {
         displayUpdateHandlers.remove(displayUpdateHandler);
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
     }
 }
