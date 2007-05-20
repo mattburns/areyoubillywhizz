@@ -1,49 +1,60 @@
 <?xml version="1.0"?>
 <project name="areyoubillywhizz" default="incrementbuild" basedir=".">
-	<property name="src" value="src"/>
-	<property name="test" value="test"/>
-	<property name="testreports" value="testreports"/>
-	<property name="bin" value="bin"/>
-	<property name="lib" value="lib"/>
-	<property name="rxtxbins" value="${lib}/rxtx-2.1-7-bins-r2"/>
+	<property name="src" value="src" />
+	<property name="test" value="test" />
+	<property name="testreports" value="testreports" />
+	<property name="bin" value="bin" />
+	<property name="lib" value="lib" />
+	<property name="rxtxbins" value="${lib}/rxtx-2.1-7-bins-r2" />
+	<property name="build" value="build" />
 	<!-- this is the one you have to set!!! -->
-	<property name="jre" value="C:/Program Files/Java/jdk1.6.0/jre"/>
-	<property name="build" value="build"/>
+	<property name="jre" value="C:/Program Files/Java/jdk1.6.0/jre" />
+	
+	<target name="clean">
+		<delete dir="${build}" />
+		<delete dir="${testreports}" />
+		<delete dir="${bin}" />
+	</target>		
+	
 	<target name="init">
-		<delete dir="${build}"/>
-		<mkdir dir="${build}"/>
-		<delete dir="${bin}"/>
-		<mkdir dir="${bin}"/>
-		<delete dir="${testreports}"/>
-		<mkdir dir="${testreports}"/>
-		<copy file="${rxtxbins}/Windows/i368-mingw32/rxtxSerial.dll" todir="${jre}/bin" />
-		<copy file="${rxtxbins}/RXTXcomm.jar" todir="${jre}/lib/ext" />
-		<copy file="${lib}/comm.jar" todir="${jre}/lib/ext" />
-		<copy file="${lib}/swt/swt-awt-win32-3236.dll" todir="${jre}/bin" />
-		<copy file="${lib}/swt/swt-win32-3236.dll" todir="${jre}/bin" />
+		<mkdir dir="${build}" />
+		<mkdir dir="${build}/jre" />
+		<copy todir="${build}/jre">
+			<fileset dir="${jre}" />
+		</copy>
+		<mkdir dir="${bin}" />
+		<mkdir dir="${testreports}" />
+		<copy file="${rxtxbins}/Windows/i368-mingw32/rxtxSerial.dll" todir="${build}/jre/bin" />
+		<copy file="${rxtxbins}/RXTXcomm.jar" todir="${build}/jre/lib/ext" />
+		<copy file="${lib}/comm.jar" todir="${build}/jre/lib/ext" />
+		<copy file="${lib}/swt/swt-awt-win32-3236.dll" todir="${build}/jre/bin" />
+		<copy file="${lib}/swt/swt-win32-3236.dll" todir="${build}/jre/bin" />
+		<copy file="${lib}/swt.jar" todir="${build}" />
+		<echo message="jre\bin\java.exe -jar areyoubillywhizz.jar" file="${build}/run.bat" />
 	</target>
 
 	<target name="compile" depends="init">
 		<!-- Compile the java code -->
-		<javac srcdir="${src}" destdir="${bin}" >
+		<javac srcdir="${src}" destdir="${bin}">
 			<classpath>
 				<fileset dir="${lib}">
-					<include name="*.jar"/>
+					<include name="*.jar" />
 				</fileset>
 			</classpath>
 		</javac>
-		<javac srcdir="${test}" destdir="${bin}" >
+		<javac srcdir="${test}" destdir="${bin}">
 			<classpath>
 				<fileset dir="${lib}">
-					<include name="*.jar"/>
+					<include name="*.jar" />
 				</fileset>
 			</classpath>
 		</javac>
 		<jar destfile="${build}/areyoubillywhizz.jar" basedir="${bin}">
-		    <manifest>
-		      <attribute name="Built-By" value="Matt Burns"/>
-		      <attribute name="Main-Class" value="gui.App"/>
-		    </manifest>
+			<manifest>
+				<attribute name="Built-By" value="Matt Burns" />
+				<attribute name="Main-Class" value="gui.AppController" />
+				<attribute name="Class-Path" value="swt.jar" />
+			</manifest>
 		</jar>
 	</target>
 
@@ -53,33 +64,33 @@
 				<pathelement path="${bin}" />
 			</classpath>
 
-			<formatter type="xml"/>
+			<formatter type="xml" />
 
 			<batchtest fork="yes" todir="testreports">
 				<fileset dir="${test}">
-					<include name="**/*Test*.java"/>
+					<include name="**/*Test*.java" />
 				</fileset>
 			</batchtest>
 		</junit>
 	</target>
-	
+
 	<target name="incrementmajor" depends="test">
-		  <propertyfile file="version.properties">
-		  	<entry key="major" type="int" operation="+" value="1" pattern="0"/>
-		  	<entry key="minor" value="0"/>
-		  	<entry key="build" value="0"/>
-		  </propertyfile>
+		<propertyfile file="version.properties">
+			<entry key="major" type="int" operation="+" value="1" pattern="0" />
+			<entry key="minor" value="0" />
+			<entry key="build" value="0" />
+		</propertyfile>
 	</target>
 	<target name="incrementminor" depends="test">
-		  <propertyfile file="version.properties">
-		  	<entry key="minor" type="int" operation="+" value="1" pattern="0"/>
-		  	<entry key="build" value="0"/>
-		  </propertyfile>
+		<propertyfile file="version.properties">
+			<entry key="minor" type="int" operation="+" value="1" pattern="0" />
+			<entry key="build" value="0" />
+		</propertyfile>
 	</target>
 	<target name="incrementbuild" depends="test">
-		  <propertyfile file="version.properties">
-		  	<entry key="build" type="int" operation="+" value="1" pattern="0"/>
-		  </propertyfile>
+		<propertyfile file="version.properties">
+			<entry key="build" type="int" operation="+" value="1" pattern="0" />
+		</propertyfile>
 	</target>
 
 </project>
