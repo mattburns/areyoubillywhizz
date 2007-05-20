@@ -4,6 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import timer.Session;
 import timer.SimpleTimerEventHandler;
 import timer.Timer;
 
@@ -17,8 +18,9 @@ public class AppController {
         Display display = Display.getDefault();
         Shell shell = new Shell(display);
         
-        Timer t = new Timer();        
-        SimpleTimerEventHandler steh = new SimpleTimerEventHandler();
+        Timer t = new Timer();  
+        Session session = new Session();
+        SimpleTimerEventHandler steh = new SimpleTimerEventHandler(session);
         App appWindow = new App(shell, SWT.NULL, steh);        
         t.registerTimerEventHandler(steh);
         steh.registerDisplayUpdateHandler(appWindow);

@@ -27,7 +27,6 @@ public class FullScreen extends Frame implements DisplayUpdateHandler {
     private BufferStrategy bufferStrategy;
 
     public FullScreen() {
-        
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
                 .getLocalGraphicsEnvironment();
         GraphicsDevice graphicsDevice = graphicsEnvironment
