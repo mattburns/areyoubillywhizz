@@ -6,31 +6,32 @@
 	<property name="bin" value="bin" />
 	<property name="lib" value="lib" />
 	<property name="rxtxbins" value="${lib}/rxtx-2.1-7-bins-r2" />
-	<property name="build" value="build" />
-	<!-- this is the one you have to set!!! -->
+	<property name="dist" value="dist" />
+	<!-- here come the machine dependant ones!!! -->
 	<property name="jre" value="C:/Program Files/Java/jdk1.6.0/jre" />
-	
+	<property name="advancedinstaller" value="C:/Program Files/Advanced Installer/" />
+
 	<target name="clean">
-		<delete dir="${build}" />
+		<delete dir="${dist}" />
 		<delete dir="${testreports}" />
 		<delete dir="${bin}" />
-	</target>		
-	
+	</target>
+
 	<target name="init">
-		<mkdir dir="${build}" />
-		<mkdir dir="${build}/jre" />
-		<copy todir="${build}/jre">
+		<mkdir dir="${dist}" />
+		<mkdir dir="${dist}/jre" />
+		<copy todir="${dist}/jre">
 			<fileset dir="${jre}" />
 		</copy>
 		<mkdir dir="${bin}" />
 		<mkdir dir="${testreports}" />
-		<copy file="${rxtxbins}/Windows/i368-mingw32/rxtxSerial.dll" todir="${build}/jre/bin" />
-		<copy file="${rxtxbins}/RXTXcomm.jar" todir="${build}/jre/lib/ext" />
-		<copy file="${lib}/comm.jar" todir="${build}/jre/lib/ext" />
-		<copy file="${lib}/swt/swt-awt-win32-3236.dll" todir="${build}/jre/bin" />
-		<copy file="${lib}/swt/swt-win32-3236.dll" todir="${build}/jre/bin" />
-		<copy file="${lib}/swt.jar" todir="${build}" />
-		<echo message="jre\bin\java.exe -jar areyoubillywhizz.jar" file="${build}/run.bat" />
+		<copy file="${rxtxbins}/Windows/i368-mingw32/rxtxSerial.dll" todir="${dist}/jre/bin" />
+		<copy file="${rxtxbins}/RXTXcomm.jar" todir="${dist}/jre/lib/ext" />
+		<copy file="${lib}/comm.jar" todir="${dist}/jre/lib/ext" />
+		<copy file="${lib}/swt/swt-awt-win32-3236.dll" todir="${dist}/jre/bin" />
+		<copy file="${lib}/swt/swt-win32-3236.dll" todir="${dist}/jre/bin" />
+		<copy file="${lib}/swt.jar" todir="${dist}" />
+		<echo message="jre\bin\java.exe -jar areyoubillywhizz.jar" file="${dist}/run.bat" />
 	</target>
 
 	<target name="compile" depends="init">
@@ -49,7 +50,7 @@
 				</fileset>
 			</classpath>
 		</javac>
-		<jar destfile="${build}/areyoubillywhizz.jar" basedir="${bin}">
+		<jar destfile="${dist}/areyoubillywhizz.jar" basedir="${bin}">
 			<manifest>
 				<attribute name="Built-By" value="Matt Burns" />
 				<attribute name="Main-Class" value="gui.AppController" />
@@ -91,6 +92,17 @@
 		<propertyfile file="version.properties">
 			<entry key="build" type="int" operation="+" value="1" pattern="0" />
 		</propertyfile>
+	</target>
+
+	<target name="buildinstaller" depends="incrementbuild">
+		<property file="version.properties" />
+		<exec executable="${advancedinstaller}/AdvancedInstaller.com">
+			<arg line="/edit installer.aip /SetVersion ${major}.${minor}.${build}" />
+		</exec>
+		<exec executable="${advancedinstaller}/AdvancedInstaller.com">
+			<arg line="/build installer.aip" />
+		</exec>
+		<move file="installer.msi" tofile="TooMuchTimeOnYoursHands_v${major}.${minor}.${build}.msi" />
 	</target>
 
 </project>
