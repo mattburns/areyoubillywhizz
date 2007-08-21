@@ -7,13 +7,15 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 
 import parser.TimerCodeParser.TimerState;
 import timer.Session;
 
-public class FullScreen extends Frame implements DisplayUpdateHandler {
+public class FullScreen extends Frame implements DisplayUpdateHandler, KeyListener {
 
     private static final long serialVersionUID = -1869252707388924320L;
     private static final double FONT_TO_SCREEN_RATIO = 0.95;
@@ -27,6 +29,7 @@ public class FullScreen extends Frame implements DisplayUpdateHandler {
     private BufferStrategy bufferStrategy;
 
     public FullScreen() {
+        this.addKeyListener(this);
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
                 .getLocalGraphicsEnvironment();
         GraphicsDevice graphicsDevice = graphicsEnvironment
@@ -103,5 +106,15 @@ public class FullScreen extends Frame implements DisplayUpdateHandler {
         } else {
             fontColour = Color.RED;
         }
+    }
+
+    public void keyTyped(KeyEvent e) {
+    }
+
+    public void keyPressed(KeyEvent e) {
+        this.dispose();
+    }
+
+    public void keyReleased(KeyEvent e) {
     }
 }
