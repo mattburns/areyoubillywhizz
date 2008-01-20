@@ -8,8 +8,8 @@
 	<property name="rxtxbins" value="${lib}/rxtx-2.1-7-bins-r2" />
 	<property name="dist" value="dist" />
 	<!-- here come the machine dependant ones!!! -->
-	<property name="jre" value="C:/Program Files/Java/jdk1.6.0/jre" />
-	<property name="advancedinstaller" value="C:/Program Files/Advanced Installer/" />
+	<property name="jre" value="F:\Program Files\Java\jre1.6.0_04" />
+	<property name="advancedinstaller" value="F:\Program Files\Caphyon\Advanced Installer 6.1" />
 
 	<target name="clean">
 		<delete dir="${dist}" />
@@ -31,7 +31,13 @@
 		<copy file="${lib}/swt/swt-awt-win32-3236.dll" todir="${dist}/jre/bin" />
 		<copy file="${lib}/swt/swt-win32-3236.dll" todir="${dist}/jre/bin" />
 		<copy file="${lib}/swt.jar" todir="${dist}" />
-		<echo message="jre\bin\java.exe -jar areyoubillywhizz.jar" file="${dist}/run.bat" />
+		<copy file="Pinpoint.ttf" todir="${dist}" />
+		<echo message="copy Pinpoint.ttf %systemroot%\fonts${line.separator}" file="${dist}/run.bat" />
+		<echo message="regedit /s font.reg${line.separator}" file="${dist}/run.bat" append="true" />
+		<echo message="jre\bin\java.exe -jar areyoubillywhizz.jar${line.separator}" file="${dist}/run.bat" append="true" />
+		
+		<echo message="[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts]${line.separator}" file="${dist}/font.reg" />
+		<echo message="&quot;Pinpoint Plain (TrueType)&quot;=&quot;Pinpoint.ttf&quot;${line.separator}" file="${dist}/font.reg" append="true" />
 	</target>
 
 	<target name="compile" depends="init">
@@ -60,9 +66,12 @@
 	</target>
 
 	<target name="test" depends="compile">
-		<junit printsummary="yes" haltonfailure="yes">
+		<junit printsummary="yes" haltonfailure="yes" fork="true" jvm="${dist}/jre/bin/java"> 
 			<classpath>
+				<pathelement path="${dist}/jre/bin"/>
 				<pathelement path="${bin}" />
+				<pathelement location="${lib}/junit.jar"/>
+				<pathelement location="${lib}/rxtx-2.1-7-bins-r2/RXTXcomm.jar"/>
 			</classpath>
 
 			<formatter type="xml" />
