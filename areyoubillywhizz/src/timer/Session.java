@@ -8,7 +8,7 @@ public class Session {
 
     private List<Solve> attempts = new ArrayList<Solve>();
 
-    private int solvesOnScreen = 9;
+    private int solvesOnScreen = 5;
 
     private int discardBest = 1;
 
