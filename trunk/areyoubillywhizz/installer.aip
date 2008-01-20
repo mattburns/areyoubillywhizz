@@ -9,10 +9,10 @@
     <ROW Property="BannerBitmap" Value="default_banner.bmp" Type="1"/>
     <ROW Property="DialogBitmap" Value="default_dialog.bmp" Type="1"/>
     <ROW Property="Manufacturer" Value="floater81" ValueLocId="*"/>
-    <ROW Property="ProductCode" Value="1033:{51863DF0-A0BC-41C5-A290-A8E6D5173DE4} "/>
+    <ROW Property="ProductCode" Value="1033:{D883BEB8-C5A7-4E98-80F0-6706397DC927} "/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="TooMuchTimeOnYourHands" ValueLocId="*"/>
-    <ROW Property="ProductVersion" Value="0.0.23"/>
+    <ROW Property="ProductVersion" Value="0.0.26"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{43E4D450-D176-4695-BF6D-2530CE4E03DE}"/>
   </COMPONENT>
