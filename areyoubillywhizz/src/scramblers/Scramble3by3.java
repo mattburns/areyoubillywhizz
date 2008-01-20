@@ -15,7 +15,6 @@
  */
 package scramblers;
 
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
 /**
  * @author Matt Burns
@@ -24,7 +23,7 @@ import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 public class Scramble3by3 implements ScrambleGenerator {
 
     private enum FACE {U, D, L, R, F, B};
-    private int scrambleLength = 25;
+    private int scrambleLength = 30;
     
     /* (non-Javadoc)
      * @see scramblers.ScrambleGenerator#getName()
