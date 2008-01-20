@@ -24,7 +24,7 @@ public class Scramble3by3Test extends TestCase {
         String scramble = threeByThree.getScramble();
         int moves = scramble.split(" ").length;
         System.out.println(scramble);
-        assertEquals(scramble + " should have had 25 moves", 25, moves);
+        assertEquals(scramble + " should have had 30 moves", 30, moves);
     }
     
     /*
