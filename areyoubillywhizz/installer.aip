@@ -9,10 +9,10 @@
     <ROW Property="BannerBitmap" Value="default_banner.bmp" Type="1"/>
     <ROW Property="DialogBitmap" Value="default_dialog.bmp" Type="1"/>
     <ROW Property="Manufacturer" Value="floater81" ValueLocId="*"/>
-    <ROW Property="ProductCode" Value="1033:{501261A5-25AC-4ED0-8A26-291868937329} "/>
+    <ROW Property="ProductCode" Value="1033:{51863DF0-A0BC-41C5-A290-A8E6D5173DE4} "/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="TooMuchTimeOnYourHands" ValueLocId="*"/>
-    <ROW Property="ProductVersion" Value="0.0.15"/>
+    <ROW Property="ProductVersion" Value="0.0.23"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{43E4D450-D176-4695-BF6D-2530CE4E03DE}"/>
   </COMPONENT>
@@ -520,6 +520,7 @@
     <ROW File="Petersburg" Component_="Indianapolis" FileName="Peters~1|Petersburg" Attributes="0" SourcePath="dist\jre\lib\zi\America\Indiana\Petersburg" SelfReg="false" Sequence="279"/>
     <ROW File="Phnom_Penh" Component_="Aden" FileName="Phnom_~1|Phnom_Penh" Attributes="0" SourcePath="dist\jre\lib\zi\Asia\Phnom_Penh" SelfReg="false" Sequence="407"/>
     <ROW File="Phoenix" Component_="Adak" FileName="Phoenix" Attributes="0" SourcePath="dist\jre\lib\zi\America\Phoenix" SelfReg="false" Sequence="317"/>
+    <ROW File="Pinpoint.ttf" Component_="areyoubillywhizz.jar" FileName="Pinpoint.ttf" Attributes="0" SourcePath="dist\Pinpoint.ttf" SelfReg="false" Sequence="621"/>
     <ROW File="Pitcairn" Component_="Apia" FileName="Pitcairn" Attributes="0" SourcePath="dist\jre\lib\zi\Pacific\Pitcairn" SelfReg="false" Sequence="578"/>
     <ROW File="Ponape" Component_="Apia" FileName="Ponape" Attributes="0" SourcePath="dist\jre\lib\zi\Pacific\Ponape" SelfReg="false" Sequence="579"/>
     <ROW File="Pontianak" Component_="Aden" FileName="Pontia~1|Pontianak" Attributes="0" SourcePath="dist\jre\lib\zi\Asia\Pontianak" SelfReg="false" Sequence="408"/>
@@ -662,6 +663,7 @@
     <ROW File="eula.dll" Component_="eula.dll" FileName="eula.dll" Attributes="0" SourcePath="dist\jre\bin\eula.dll" SelfReg="false" Sequence="14"/>
     <ROW File="ffjcext.zip" Component_="ffjcext.zip" FileName="ffjcext.zip" Attributes="0" SourcePath="dist\jre\lib\deploy\ffjcext.zip" SelfReg="false" Sequence="95"/>
     <ROW File="flavormap.properties" Component_="calendars.properties" FileName="flavor~1.pro|flavormap.properties" Attributes="0" SourcePath="dist\jre\lib\flavormap.properties" SelfReg="false" Sequence="117"/>
+    <ROW File="font.reg" Component_="areyoubillywhizz.jar" FileName="font.reg" Attributes="0" SourcePath="dist\font.reg" SelfReg="false" Sequence="620"/>
     <ROW File="fontconfig.98.bfc" Component_="calendars.properties" FileName="fontco~1.bfc|fontconfig.98.bfc" Attributes="0" SourcePath="dist\jre\lib\fontconfig.98.bfc" SelfReg="false" Sequence="118"/>
     <ROW File="fontconfig.98.properties.src" Component_="calendars.properties" FileName="fontco~1.src|fontconfig.98.properties.src" Attributes="0" SourcePath="dist\jre\lib\fontconfig.98.properties.src" SelfReg="false" Sequence="119"/>
     <ROW File="fontconfig.bfc" Component_="calendars.properties" FileName="fontco~2.bfc|fontconfig.bfc" Attributes="0" SourcePath="dist\jre\lib\fontconfig.bfc" SelfReg="false" Sequence="120"/>
@@ -670,6 +672,7 @@
     <ROW File="hpi.dll" Component_="hpi.dll" FileName="hpi.dll" Attributes="0" SourcePath="dist\jre\bin\hpi.dll" SelfReg="false" Sequence="16"/>
     <ROW File="hprof.dll" Component_="hprof.dll" FileName="hprof.dll" Attributes="0" SourcePath="dist\jre\bin\hprof.dll" SelfReg="false" Sequence="17"/>
     <ROW File="indicim.jar" Component_="indicim.jar" FileName="indicim.jar" Attributes="0" SourcePath="dist\jre\lib\im\indicim.jar" SelfReg="false" Sequence="131"/>
+    <ROW File="init.bat" Component_="areyoubillywhizz.jar" FileName="init.bat" Attributes="0" SourcePath="dist\init.bat" SelfReg="false" Sequence="619"/>
     <ROW File="instrument.dll" Component_="instrument.dll" FileName="instru~1.dll|instrument.dll" Attributes="0" SourcePath="dist\jre\bin\instrument.dll" SelfReg="false" Sequence="18"/>
     <ROW File="invalid32x32.gif" Component_="cursors.properties" FileName="invali~1.gif|invalid32x32.gif" Attributes="0" SourcePath="dist\jre\lib\images\cursors\invalid32x32.gif" SelfReg="false" Sequence="134"/>
     <ROW File="ioser12.dll" Component_="ioser12.dll" FileName="ioser12.dll" Attributes="0" SourcePath="dist\jre\bin\ioser12.dll" SelfReg="false" Sequence="19"/>

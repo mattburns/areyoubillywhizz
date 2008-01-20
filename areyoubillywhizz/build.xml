@@ -32,10 +32,13 @@
 		<copy file="${lib}/swt/swt-win32-3236.dll" todir="${dist}/jre/bin" />
 		<copy file="${lib}/swt.jar" todir="${dist}" />
 		<copy file="Pinpoint.ttf" todir="${dist}" />
-		<echo message="copy Pinpoint.ttf %systemroot%\fonts${line.separator}" file="${dist}/run.bat" />
-		<echo message="regedit /s font.reg${line.separator}" file="${dist}/run.bat" append="true" />
+		<echo message="copy Pinpoint.ttf %systemroot%\fonts${line.separator}" file="${dist}/init.bat" />
+		<echo message="regedit /s font.reg${line.separator}" file="${dist}/init.bat" append="true" />
+		<echo message="del Pinpoint.ttf${line.separator}" file="${dist}/init.bat" append="true" />
+				
+		<echo message="IF EXIST Pinpoint.ttf call init.bat${line.separator}" file="${dist}/run.bat" />
 		<echo message="jre\bin\java.exe -jar areyoubillywhizz.jar${line.separator}" file="${dist}/run.bat" append="true" />
-		
+				
 		<echo message="[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts]${line.separator}" file="${dist}/font.reg" />
 		<echo message="&quot;Pinpoint Plain (TrueType)&quot;=&quot;Pinpoint.ttf&quot;${line.separator}" file="${dist}/font.reg" append="true" />
 	</target>
