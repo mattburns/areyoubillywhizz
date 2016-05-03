@@ -13,7 +13,7 @@ Log and display times from your StackMat or Rubiks competition timer. Logs perso
 ![screenshot](images/screenshot.jpg?raw=true "screenshot")
 
 ## Cable
-You'll probably need to make your own cable to connect your stackmat to your serial port. pin 2 is on the tip of the jack, 5 is the middle ring.
+You'll probably need to make your own cable to connect your stackmat to your serial port. The cable you will need is 2.5mm jack to female D9. Pin 2 is on the tip of the jack, and pin 5 is the middle ring.
 
 ![cable](images/cable.jpg?raw=true "cable")
 
